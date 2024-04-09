@@ -1,38 +1,65 @@
+/* FEEDBACK: Leaving feedback here because I can't in the
+package.json file. In the package.json file, you should have
+a "start" script and a "dev" script. During development, you
+want to be using `nodemon` to have the server restart each
+time you make a change. But when you deploy, you want a "start"
+command that just runs the command using `node. Your scripts
+should look this like:
+
+"scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+},
+*/
+
+
+
 const express = require('express');
 const app = express();
 
+/* FEEDBACK: Nice job with these controllers!! */
+
 // controllers
 const serveIndex = (req, res, next) => {
-    //sends html response with an html file
-    res.sendFile(__dirname + '/index.html');
-  }
+  //sends html response with an html file
+  res.sendFile(__dirname + '/index.html');
+}
 
-  const serveFunFact = (req, res, next) => {
-    //sends html response with raw html
-    res.send("<h3>Kellyne's favorite color is turquoise</h3>");
-  }
+const serveFunFact = (req, res, next) => {
+  //sends html response with raw html
+  res.send("<h3>Kellyne's favorite color is turquoise</h3>");
+}
 
-  const serveGreeting = (req, res, next) => {
-    //sends a data response
-    const greeting = req.query.greeting || "hello"
-    res.send(`Kellyne says ${greeting}!`);
-  }
+/* FEEDBACK: Love this! */
+const serveGreeting = (req, res, next) => {
+  //sends a data response
+  const greeting = req.query.greeting || "hello"
+  res.send(`Kellyne says ${greeting}!`);
+}
 
-  const serveData = (req, res, next) => {
-    //sends a data response
-    const data = [{ name: 'Kellyne' }, { age: '19' }, { friends: ["Leah", "Mikayla"] }];
-    res.send(data);
-  }
+const serveData = (req, res, next) => {
+  //sends a data response
+
+  /* FEEDBACK: The data you're sending back could have 
+  a better structure. You're returning an array of separate
+  objects, but those objects all have a single data value
+  related to you. Instead, just send back a single object:
   
-  // endpoints
-  app.get('/', serveIndex);
-  app.get('/about', serveFunFact);
-  app.get('/api/greeting', serveGreeting);
-  app.get('/api/data', serveData);
-  
-  // listen
-  const port = 8080;
-  app.listen(port, () => console.log(`listening at http://localhost:${port}`)); 
+  const data = { name: 'Kellyne', age: 19, friends: ["Leah", "Mikayla"]}
+  */
+  const data = [{ name: 'Kellyne' }, { age: '19' }, { friends: ["Leah", "Mikayla"] }];
+  res.send(data);
+}
+
+// endpoints
+app.get('/', serveIndex);
+app.get('/about', serveFunFact);
+app.get('/api/greeting', serveGreeting);
+app.get('/api/data', serveData);
+
+// listen
+const port = 8080;
+app.listen(port, () => console.log(`listening at http://localhost:${port}`));
 
 
 
